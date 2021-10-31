@@ -3,6 +3,16 @@
 	"EngineAssociation": "4.27",
 	"Category": "",
 	"Description": "",
+	"Modules": [
+		{
+			"Name": "VRTeleoperation",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	],
 	"Plugins": [
 		{
 			"Name": "XRVisualization",
@@ -49,6 +59,10 @@
 				"Win64",
 				"Android"
 			]
+		},
+		{
+			"Name": "ROSIntegration",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
