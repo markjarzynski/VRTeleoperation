@@ -25,7 +25,36 @@ Skip this step if you're already running Ubuntu 20.04.
 
 ### Installing ROS in Ubuntu
 
-Follow the normal Ubuntu install of ROS Noetic at: http://wiki.ros.org/noetic/Installation/Ubuntu
+Note: ROSIntegration doesn't communicate with ros noetic, you must use ros melodic.
+
+Follow the normal Ubuntu install of ROS Melodic at: http://wiki.ros.org/melodic/Installation/Ubuntu
+
+Don't forge to append `source /opt/ros/melodic/setup.bash` to the end of your `.bashrc` file.
+
+```
+echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
+```
+
+### Compiling rosbridge
+
+Apparently rosbridge_suite 0.11.11 broke ROSIntegration, so we'll have to use an older version: 0.11.10.
+
+```
+mkdir -p ~/ws/src
+cd ~/ws/src
+git clone https://github.com/RobotWebTools/rosbridge_suite
+cd rosbridge_suite
+git checkout 0.11.10
+cd ~/ws
+catkin_make
+echo 'source $HOME/ws/devel/setup.bash' >> ~/.bashrc
+```
+
+You might also need a few python packages
+```
+sudo apt install python-pip
+pip install tornado pymongo twisted
+```
 
 ### Running ROS
 
