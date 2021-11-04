@@ -2,6 +2,9 @@
 
 
 #include "Echo.h"
+#include "ROSIntegration/Classes/RI/Topic.h"
+#include "ROSIntegration/Classes/ROSIntegrationGameInstance.h"
+#include "ROSIntegration/Public/std_msgs/String.h"
 
 // Sets default values
 AEcho::AEcho()
@@ -15,32 +18,48 @@ void AEcho::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("Echo"));
+	UE_LOG(LogTemp, Warning, TEXT("Echo BeginPlay"));
 
-	UTopic* m_topic = NewObject<UTopic>(UTopic::StaticClass());
-	UROSIntegrationGameInstance* rosinst = Cast<UROSIntegrationGameInstance>(GetGameInstance());
-	m_topic->Init(rosinst->ROSIntegrationCore, TEXT("/example_topic"), TEXT("std_msgs/String"));
-
-	// Create a std::function callback object
-	std::function<void(TSharedPtr<FROSBaseMsg>)> SubscribeCallback = [](TSharedPtr<FROSBaseMsg> msg) -> void
+	// Initialize a topic
+	m_ExampleTopic = NewObject<UTopic>(UTopic::StaticClass());
+	ROSInst = Cast<UROSIntegrationGameInstance>(GetGameInstance());
+	if (ROSInst)
 	{
-		auto Concrete = StaticCastSharedPtr<ROSMessages::std_msgs::String>(msg);
-		if (Concrete.IsValid())
-		{
-			UE_LOG(LogTemp, Log, TEXT("Incoming string was: %s"), (*(Concrete->_Data)));
-		}
-		return;
-	};
+		m_ExampleTopic->Init(ROSInst->ROSIntegrationCore, TEXT("/example_topic"), TEXT("std_msgs/String"));
 
-	// Subscribe to the topic
-	m_topic->Subscribe(SubscribeCallback);
-	
+		std::function<void(TSharedPtr<FROSBaseMsg>)> EchoCallback = AEcho::EchoCallbackImpl;
+		m_ExampleTopic->Subscribe(EchoCallback);
+
+		UE_LOG(LogTemp, Warning, TEXT("Echo Subscribe"));
+	}
+}
+
+void AEcho::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	UE_LOG(LogTemp, Warning, TEXT("Echo EndPlay"));
 }
 
 // Called every frame
 void AEcho::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+void AEcho::EchoCallbackImpl(TSharedPtr<FROSBaseMsg> msg)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Echo"));
+	auto Concrete = StaticCastSharedPtr<ROSMessages::std_msgs::String>(msg);
+	if (Concrete.IsValid())
+	{
+		UE_LOG(LogTemp, Log, TEXT("%s"), (*(Concrete->_Data)));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Not valid."));
+	}
+
+	return;
 }
 

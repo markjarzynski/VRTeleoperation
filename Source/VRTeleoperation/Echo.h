@@ -2,10 +2,6 @@
 
 #pragma once
 
-#include "ROSIntegration/Classes/RI/Topic.h"
-#include "ROSIntegration/Classes/ROSIntegrationGameInstance.h"
-#include "ROSIntegration/Public/std_msgs/String.h"
-
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Echo.generated.h"
@@ -23,9 +19,21 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	// Member variables
+
+	UPROPERTY()
+	class UROSIntegrationGameInstance* ROSInst;
+
+	UPROPERTY()
+	class UTopic* m_ExampleTopic;
+
+	static void EchoCallbackImpl(TSharedPtr<class FROSBaseMsg> msg);
 
 };
