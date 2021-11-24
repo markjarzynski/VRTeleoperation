@@ -4,7 +4,7 @@
 #include "RobotPoseActorComponent.h"
 #include "ROSIntegration/Classes/RI/Topic.h"
 #include "ROSIntegration/Classes/ROSIntegrationGameInstance.h"
-#include "ROSIntegration/Public/std_msgs/String.h"
+#include "ROSIntegration/Public/geometry_msgs/Twist.h"
 
 // Sets default values for this component's properties
 URobotPoseActorComponent::URobotPoseActorComponent()
@@ -27,7 +27,7 @@ void URobotPoseActorComponent::BeginPlay()
 
 	if (ROSInst)
 	{
-		m_PoseTopic->Init(ROSInst->ROSIntegrationCore, TEXT("/example_topic"), TEXT("std_msgs/String"));
+		m_PoseTopic->Init(ROSInst->ROSIntegrationCore, TEXT("/cmd_vel"), TEXT("geometry_msgs/Twist"));
 
 		std::function<void(TSharedPtr<FROSBaseMsg>)> PoseCallback = URobotPoseActorComponent::PoseCallbackImpl;
 		m_PoseTopic->Subscribe(PoseCallback);
@@ -46,10 +46,10 @@ void URobotPoseActorComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 
 void URobotPoseActorComponent::PoseCallbackImpl(TSharedPtr<FROSBaseMsg> msg)
 {
-	auto Concrete = StaticCastSharedPtr<ROSMessages::std_msgs::String>(msg);
+	auto Concrete = StaticCastSharedPtr<ROSMessages::geometry_msgs::Twist>(msg);
 	if (Concrete.IsValid())
 	{
-		UE_LOG(LogTemp, Log, TEXT("%s"), (*(Concrete->_Data)));
+		//UE_LOG(LogTemp, Log, TEXT("%s"), (*(Concrete->linear)));
 	}
 
 	return;

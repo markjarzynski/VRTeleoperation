@@ -42,16 +42,15 @@ Apparently rosbridge_suite 0.11.11 broke ROSIntegration, so we'll have to use an
 ```
 mkdir -p ~/ws/src
 cd ~/ws/src
-git clone https://github.com/RobotWebTools/rosbridge_suite
-cd rosbridge_suite
-git checkout 0.11.10
+git clone https://github.com/RobotWebTools/rosbridge_suite -b 0.11.10
 cd ~/ws
 catkin_make
 echo 'source $HOME/ws/devel/setup.bash' >> ~/.bashrc
 ```
 
-You might also need a few python packages
+You might also need a few more packages
 ```
+sudo apt install ros-melodic-rosauth
 sudo apt install python-pip
 pip install tornado pymongo twisted
 ```
