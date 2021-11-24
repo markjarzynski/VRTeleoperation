@@ -39,7 +39,7 @@ void UOdometryActorComponent::BeginPlay()
 
 				UE_LOG(LogTemp, Log, TEXT("Odometry Callback %d %f %f %f"), count, pose.position.x, pose.position.y, pose.position.z);
 
-				float scale = 10.0;
+				float scale = 100.0;
 
 				FVector location = FVector(pose.position.x * scale, pose.position.y * scale, pose.position.z * scale);
 				FQuat orientation = FQuat(pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w);
