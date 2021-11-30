@@ -43,7 +43,7 @@ void UOdometryActorComponent::BeginPlay()
 				FQuat orientation = FQuat(pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w);
 				FRotator rotation = orientation.Rotator();
 
-				this->GetOwner()->SetActorLocationAndRotation(location, rotation, false);
+				this->GetOwner()->SetActorLocationAndRotation(location, rotation);
 				//this->GetOwner()->SetActorLocationAndRotation(location, &orientation, false, ETeleportType::None);
 			}
 			return;
