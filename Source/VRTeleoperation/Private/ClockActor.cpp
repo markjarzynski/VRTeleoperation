@@ -32,6 +32,15 @@ void AClockActor::BeginPlay()
 	ClockTopic->Advertise();
 }
 
+void AClockActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	UE_LOG(LogTemp, Log, TEXT("AClockActor::EndPlay()"));
+
+	ClockTopic->Unadvertise();
+
+	Super::EndPlay(EndPlayReason);
+}
+
 // Called every frame
 void AClockActor::Tick(float DeltaTime)
 {

@@ -26,6 +26,8 @@ public:
 
 private:
 	
+	float scale = 100.0;
+
 	/*
 	UPROPERTY()
 	class UROSIntegrationGameInstance* ROSInst;
@@ -33,8 +35,6 @@ private:
 	UPROPERTY()
 	class UTopic* OdometryTopic;
 	*/
-
-	int count;
 
 	//static void OdometryCallback(TSharedPtr<class FROSBaseMsg> msg);
 	
