@@ -69,4 +69,31 @@ Run the following commands in different Terminal windows
 
 This should print "hello" every second in the `roslaunch echo /example_topic` window.
 
+#### Simulating a Husky: Gazebo, RViz, and RQT
 
+[Simulating Husky](http://wiki.ros.org/husky_gazebo/Tutorials/Simulating%20Husky)
+
+Run the additional following in seperate Terminal windows
+
+```
+roslaunch husky_gazebo husky_playpen.launch
+roslaunch husky_viz view_robot.launch
+rqt
+```
+
+In `rqt` select Plugins->Robot Tools->Robot Steering from the top menu. Using this interface you can control the Husky.
+
+#### AMCL
+
+[AMCL Husky Demo](http://wiki.ros.org/husky_navigation/Tutorials/Husky%20AMCL%20Demo)
+
+Run the additional following in a seperate Terminal window
+
+```
+roslaunch husky_navigation amcl_demo.launch
+```
+
+In RViz you should now see a map of what the robot sees.
+
+1. Use the 2D Pose Estimate tool in the top toolbar to give amcl an initial pose estimate.
+2. Use the 2D Pose Estimate tool in the top toolbar to give amcl an initial pose estimate.
