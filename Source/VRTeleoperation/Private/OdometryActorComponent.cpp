@@ -23,8 +23,11 @@ void UOdometryActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UTopic* OdometryTopic = NewObject<UTopic>(UTopic::StaticClass());
-	UROSIntegrationGameInstance* ROSInst = Cast<UROSIntegrationGameInstance>(GetWorld()->GetGameInstance());
+	location = FVector();
+	rotation = FRotator();
+
+	OdometryTopic = NewObject<UTopic>(UTopic::StaticClass());
+	ROSInst = Cast<UROSIntegrationGameInstance>(GetWorld()->GetGameInstance());
 
 	if (ROSInst)
 	{
@@ -37,13 +40,13 @@ void UOdometryActorComponent::BeginPlay()
 			{
 				ROSMessages::geometry_msgs::Pose pose = Concrete->pose.pose;
 
-				UE_LOG(LogTemp, Log, TEXT("Odometry Callback %f %f %f"), pose.position.x, pose.position.y, pose.position.z);
+				//UE_LOG(LogTemp, Log, TEXT("Odometry Callback %f %f %f"), pose.position.x, pose.position.y, pose.position.z);
 
-				FVector location = FVector(pose.position.x * scale, pose.position.y * scale, pose.position.z * scale);
+				location = FVector(pose.position.x * scale, pose.position.y * scale, pose.position.z * scale);
 				FQuat orientation = FQuat(pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w);
-				FRotator rotation = orientation.Rotator();
+				rotation = orientation.Rotator();
 
-				this->GetOwner()->SetActorLocationAndRotation(location, rotation);
+				//this->GetOwner()->SetActorLocationAndRotation(location, rotation);
 				//this->GetOwner()->SetActorLocationAndRotation(location, &orientation, false, ETeleportType::None);
 			}
 			return;
@@ -59,6 +62,11 @@ void UOdometryActorComponent::BeginPlay()
 
 }
 
+void UOdometryActorComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	OdometryTopic->Unsubscribe();
+}
+
 
 // Called every frame
 void UOdometryActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -66,6 +74,7 @@ void UOdometryActorComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+	this->GetOwner()->SetActorLocationAndRotation(location, rotation);
 }
 
 /*
