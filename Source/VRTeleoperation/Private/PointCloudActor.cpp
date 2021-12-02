@@ -42,25 +42,7 @@ void APointCloudActor::BeginPlay()
 
 				for (uint32 i = 0; i < num_points; i += point_step) {
 
-					union {
-						uint8_t d[4];
-						float f;
-					} x;
-
-					union {
-						uint8_t d[4];
-						float f;
-					} y;
-
-					union {
-						uint8_t d[4];
-						float f;
-					} z;
-
-					union {
-						uint8_t d[4];
-						float f;
-					} rgb;
+					data_float32 x, y, z, rgb;
 
 					for (int j = 0; j < 4; j++) {
 						x.d[j] = Concrete->data_ptr[i + 3 - j];

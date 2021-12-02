@@ -32,4 +32,12 @@ private:
 	UPROPERTY()
 	class UTopic* PointCloudTopic;
 
+	struct data_float32
+	{
+		union {
+			uint8_t d[4];
+			float f;
+		};
+	};
+
 };
