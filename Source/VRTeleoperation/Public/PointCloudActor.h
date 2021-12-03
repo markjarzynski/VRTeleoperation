@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "LidarPointCloud.h"
 #include "LidarPointCloudActor.h"
+#include "LidarPointCloudShared.h"
 #include "PointCloudActor.generated.h"
 
 UCLASS()
@@ -39,5 +41,14 @@ private:
 			float f;
 		};
 	};
+
+	float scale = 100.0;
+
+	/*
+	TArray64<FLidarPointCloudPoint> points;
+	*/
+
+	UPROPERTY()
+	ULidarPointCloud* pointcloud;
 
 };
