@@ -55,13 +55,10 @@ void APointCloudActor::BeginPlay()
 				uint32 num_points = Concrete->row_step * Concrete->height;
 				uint32 point_step = Concrete->point_step;
 
-				UE_LOG(LogTemp, Log, TEXT("PointCloud: %d %d, point_step: %d"), height, width, point_step);
+				//UE_LOG(LogTemp, Log, TEXT("PointCloud: %d %d, point_step: %d"), height, width, point_step);
 
-				TArray64<FLidarPointCloudPoint> points;
+				TArray<FLidarPointCloudPoint> points;
 				points.Reserve(num_points);
-
-				points.Add(FLidarPointCloudPoint(FVector(0, 0, 50), FColor::White, false, 0));
-				points.Add(FLidarPointCloudPoint(FVector(0, 0, -50), FColor::White, false, 0));
 
 				for (uint32 i = 0; i < num_points; i += point_step) {
 
@@ -71,24 +68,24 @@ void APointCloudActor::BeginPlay()
 						x.d[j] = Concrete->data_ptr[i + j];
 					}
 
-					for (int j = 4; j < 4; j++) {
-						y.d[j] = Concrete->data_ptr[i + j];
+					for (int j = 0; j < 4; j++) {
+						y.d[j] = Concrete->data_ptr[i + 4 + j];
 					}
 
-					for (int j = 8; j < 4; j++) {
-						z.d[j] = Concrete->data_ptr[i + j];
+					for (int j = 0; j < 4; j++) {
+						z.d[j] = Concrete->data_ptr[i + 8 +j];
 					}
 
-					for (int j = 16; j < 4; j++) {
-						rgb.d[j] = Concrete->data_ptr[i + j];
+					for (int j = 0; j < 4; j++) {
+						rgb.d[j] = Concrete->data_ptr[i + 16 + j];
 					}
 
 					//UE_LOG(LogTemp, Log, TEXT("Data: %d %d %d %d"), Concrete->data_ptr[i], Concrete->data_ptr[i + 1], Concrete->data_ptr[i + 2], Concrete->data_ptr[i + 3]);
 					
 
 					if (!isnan(x.f) && !isnan(y.f) && !isnan(z.f)) {
-						if (abs(x.f) < 1000 && abs(y.f) < 1000 && abs(z.f) < 1000) {
-							const FVector p = FVector(x.f * scale, y.f * scale + 0.1, z.f * scale);
+						if (true /*abs(x.f) < 10000 && abs(y.f) < 10000 && abs(z.f) < 10000*/) {
+							const FVector p = FVector(-x.f * scale, z.f * scale, -y.f * scale);
 							points.Emplace(p);
 							//UE_LOG(LogTemp, Log, TEXT("Point: %f %f %f %f"), x.f, y.f, z.f, rgb.f);
 
@@ -98,12 +95,26 @@ void APointCloudActor::BeginPlay()
 
 				}
 
+				if (points.Num() > 0 && GetPointCloud() == nullptr) {
+					// Fix for Error: Provided bounds are incorrect
+					points.Add(FLidarPointCloudPoint(FVector(0, 0, 50), FColor::White, false, 0));
+					points.Add(FLidarPointCloudPoint(FVector(0, 0, -50), FColor::White, false, 0));
+
+					this->pointcloud = ULidarPointCloud::CreateFromData(points, false);
+
+					//if (GetPointCloud()->GetNumPoints() == 0) {
+					SetPointCloud(pointcloud);
+					//}
+				} else {
+					//GetPointCloud()->Initialize(FBox());
+					GetPointCloud()->InsertPoints(points, ELidarPointCloudDuplicateHandling::Ignore, true, FVector(0, 0, 0));
+				}
+
 				//pointcloud->InsertPoints(points, GetDefault<ULidarPointCloudSettings>()->DuplicateHandling, true, FVector(0, 0, 0));
 
-				UE_LOG(LogTemp, Log, TEXT("Num Points: %d"), points.Num());
+				//UE_LOG(LogTemp, Log, TEXT("Num Points: %d"), points.Num());
 
-				this->pointcloud = ULidarPointCloud::CreateFromData(points, false);
-				SetPointCloud(pointcloud);
+				
 
 				//UE_LOG(LogTemp, Log, TEXT("Odometry Callback %f %f %f"), pose.position.x, pose.position.y, pose.position.z);
 			}
