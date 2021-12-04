@@ -49,6 +49,11 @@ private:
 	*/
 
 	UPROPERTY()
+	TArray<FLidarPointCloudPoint> points;
+
+	UPROPERTY()
 	ULidarPointCloud* pointcloud;
+
+	bool bNeedsUpdate;
 
 };

@@ -23,6 +23,8 @@ void APointCloudActor::BeginPlay()
 	PointCloudTopic = NewObject<UTopic>(UTopic::StaticClass());
 	ROSInst = Cast<UROSIntegrationGameInstance>(GetWorld()->GetGameInstance());
 
+	bNeedsUpdate = false;
+
 	
 	// Fix for Error: Provided bounds are incorrect
 	/*
@@ -57,7 +59,12 @@ void APointCloudActor::BeginPlay()
 
 				//UE_LOG(LogTemp, Log, TEXT("PointCloud: %d %d, point_step: %d"), height, width, point_step);
 
-				TArray<FLidarPointCloudPoint> points;
+				/*
+				if (points.Num() > 0) {
+					return;
+				}
+				*/
+				points.Empty();
 				points.Reserve(num_points);
 
 				for (uint32 i = 0; i < num_points; i += point_step) {
@@ -95,20 +102,40 @@ void APointCloudActor::BeginPlay()
 
 				}
 
+				points.Add(FLidarPointCloudPoint(FVector(0, 0, 50), FColor::White, false, 0));
+				points.Add(FLidarPointCloudPoint(FVector(0, 0, -50), FColor::White, false, 0));
+
+				bNeedsUpdate = true;
+
+				/*
+				// Fix for Error: Provided bounds are incorrect
+				points.Add(FLidarPointCloudPoint(FVector(0, 0, 1), FColor::White, false, 0));
+				points.Add(FLidarPointCloudPoint(FVector(0, 0, -1), FColor::White, false, 0));
+				SetPointCloud(ULidarPointCloud::CreateFromData(points, false));
+				*/
+				/*
 				if (points.Num() > 0 && GetPointCloud() == nullptr) {
 					// Fix for Error: Provided bounds are incorrect
 					points.Add(FLidarPointCloudPoint(FVector(0, 0, 50), FColor::White, false, 0));
 					points.Add(FLidarPointCloudPoint(FVector(0, 0, -50), FColor::White, false, 0));
 
-					this->pointcloud = ULidarPointCloud::CreateFromData(points, false);
+					bNeedsUpdate = true;
 
-					//if (GetPointCloud()->GetNumPoints() == 0) {
-					SetPointCloud(pointcloud);
-					//}
+					//this->pointcloud = ULidarPointCloud::CreateFromData(points, false);
+					//SetPointCloud(pointcloud);
+
+					//SetPointCloud(ULidarPointCloud::CreateFromData(points, false));
+					
 				} else {
 					//GetPointCloud()->Initialize(FBox());
-					GetPointCloud()->InsertPoints(points, ELidarPointCloudDuplicateHandling::Ignore, true, FVector(0, 0, 0));
+					//SetPointCloud(ULidarPointCloud::CreateFromData(points, false));
+
+					//GetPointCloud()->RemovePointsInSphere(FSphere(FVector(0, 0, 0), 10000), false);
+
+					//GetPointCloud()->InsertPoints(points, ELidarPointCloudDuplicateHandling::SelectBrighter, true, FVector(0, 0, 0));
+					
 				}
+				*/
 
 				//pointcloud->InsertPoints(points, GetDefault<ULidarPointCloudSettings>()->DuplicateHandling, true, FVector(0, 0, 0));
 
@@ -133,11 +160,20 @@ void APointCloudActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bNeedsUpdate)
+	{
+		SetPointCloud(ULidarPointCloud::CreateFromData(points, false));
+
+		bNeedsUpdate = false;
+	}
+
 	/*
 	if (points.Num() > 0) {
-		pointcloud = ULidarPointCloud::CreateFromData(points, false);
-		SetPointCloud(pointcloud);
-		//points.Empty();
+		//pointcloud = ULidarPointCloud::CreateFromData(points, false);
+		//SetPointCloud(pointcloud);
+		//SetPointCloud(ULidarPointCloud::CreateFromData(points, false));
+		GetPointCloud()->InsertPoints(points, ELidarPointCloudDuplicateHandling::SelectFirst, true, FVector(0, 0, 0));
+		points.Empty();
 	}
 	*/
 
