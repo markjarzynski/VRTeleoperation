@@ -33,6 +33,8 @@ private:
 	FVector location;
 	FRotator rotation;
 
+	FVector velocity;
+	FRotator angular_velocity;
 
 	UPROPERTY()
 	class UROSIntegrationGameInstance* ROSInst;

@@ -31,7 +31,7 @@ void UOdometryActorComponent::BeginPlay()
 
 	if (ROSInst)
 	{
-		OdometryTopic->Init(ROSInst->ROSIntegrationCore, TEXT("/odometry/filtered"), TEXT("nav_msgs/Odometry"));
+		OdometryTopic->Init(ROSInst->ROSIntegrationCore, TEXT("/my_odom_throttle"), TEXT("nav_msgs/Odometry"));
 		std::function<void(TSharedPtr<FROSBaseMsg>)> OdometryCallback = [&](TSharedPtr<FROSBaseMsg> msg) -> void
 		{
 			auto Concrete = StaticCastSharedPtr<ROSMessages::nav_msgs::Odometry>(msg);

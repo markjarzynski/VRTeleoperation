@@ -44,7 +44,9 @@ void APointCloudActor::BeginPlay()
 
 	if (ROSInst)
 	{
-		PointCloudTopic->Init(ROSInst->ROSIntegrationCore, TEXT("/camera/depth/points"), TEXT("sensor_msgs/PointCloud2"));
+		//Kinect: /camera/depth/points
+		//Realsense: /realsense/depth/color/points
+		PointCloudTopic->Init(ROSInst->ROSIntegrationCore, TEXT("/realsense/depth/color/points_throttle"), TEXT("sensor_msgs/PointCloud2"));
 		std::function<void(TSharedPtr<FROSBaseMsg>)> PointCloudCallback = [&](TSharedPtr<FROSBaseMsg> msg) -> void
 		{
 			auto Concrete = StaticCastSharedPtr<ROSMessages::sensor_msgs::PointCloud2>(msg);
