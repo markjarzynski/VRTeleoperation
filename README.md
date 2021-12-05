@@ -97,3 +97,24 @@ In RViz you should now see a map of what the robot sees.
 
 1. Use the 2D Pose Estimate tool in the top toolbar to give amcl an initial pose estimate.
 2. Use the 2D Pose Estimate tool in the top toolbar to give amcl an initial pose estimate.
+
+
+#### Actual Simulated Robot position
+
+To get the robot's actual simulated position in Gazebo instead of just the robots odometry. This command publishes that to /my_odom
+
+```
+roslaunch my_odom_publisher start_odom.launch
+```
+
+#### Throttle messages.
+
+It seems like UE4 is more stable when messages are throttled.
+
+```
+rosrun topic_tools throttle messages /realsense/depth/color/points 2.0
+rosrun topic_tools throttle messages /my_odom 1.0
+```
+
+
+
