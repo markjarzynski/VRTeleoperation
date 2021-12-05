@@ -1,0 +1,12 @@
+<package>
+  <description brief="my_odom_publisher">
+
+     my_odom_publisher
+
+  </description>
+  <author>mark</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/my_odom_publisher</url>
+
+</package>
