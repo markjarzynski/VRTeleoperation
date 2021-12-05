@@ -16,4 +16,7 @@ class VRTELEOPERATION_API UVRBlueprintFunctionLibrary : public UBlueprintFunctio
 
 	UFUNCTION(BlueprintCallable, Category = "VR Teleoperation")
 	static void test();
+
+	UFUNCTION(BlueprintCallable, Category = "VR Teleoperation", meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
+	static void joy_teleop(UObject * WorldContextObject, float x, float y);
 };
