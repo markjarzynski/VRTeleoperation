@@ -203,10 +203,10 @@
       <pose frame=''>2.5785 -0.455734 0 0 -0 0</pose>
     </model>
     <state world_name='default'>
-      <sim_time>4 816000000</sim_time>
-      <real_time>5 949881800</real_time>
-      <wall_time>1638386123 542893300</wall_time>
-      <iterations>4816</iterations>
+      <sim_time>44 904000000</sim_time>
+      <real_time>57 99195600</real_time>
+      <wall_time>1638826658 407638900</wall_time>
+      <iterations>40088</iterations>
       <model name='ground_plane'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -738,7 +738,7 @@
         </link>
       </model>
       <model name='nist_maze_wall_120_clone_0_clone_9'>
-        <pose frame=''>2.36851 -2.42794 -0 0 0 -0.785398</pose>
+        <pose frame=''>2.36851 -2.42794 0 0 0 -0.785398</pose>
         <scale>1 1 1</scale>
         <link name='nist_maze_wall_120_link'>
           <pose frame=''>2.36851 -2.42794 -0 0 0 -0.785398</pose>
@@ -1133,7 +1133,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose frame=''>-11.7868 2.77824 23.5868 0 0.951641 -0.566987</pose>
+        <pose frame=''>-6.389 -3.46854 10.4745 0 0.951641 -0.566987</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
