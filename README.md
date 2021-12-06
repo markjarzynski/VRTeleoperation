@@ -35,6 +35,13 @@ Don't forge to append `source /opt/ros/melodic/setup.bash` to the end of your `.
 echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
 ```
 
+### Simulating Husky
+
+```
+sudo apt install ros-melodic-husky-simulator
+```
+
+
 ### Compiling rosbridge
 
 Apparently rosbridge_suite 0.11.11 broke ROSIntegration, so we'll have to use an older version: 0.11.10.
