@@ -86,7 +86,7 @@ This should print "hello" every second in the `roslaunch echo /example_topic` wi
 Run the additional following in seperate Terminal windows
 
 ```
-roslaunch husky_gazebo husky_playpen.launch
+roslaunch husky_custom_gazebo husky_maze1.launch
 roslaunch husky_viz view_robot.launch
 rqt
 ```
