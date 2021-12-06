@@ -114,6 +114,14 @@ To get the robot's actual simulated position in Gazebo instead of just the robot
 roslaunch my_odom_publisher start_odom.launch
 ```
 
+#### Realsense
+
+Enable realsense in Husky
+
+```
+echo "export HUSKY_REALSENSE_ENABLED=1" >> ~/.bashrc
+```
+
 #### Throttle messages.
 
 It seems like UE4 is more stable when messages are throttled.
@@ -122,6 +130,4 @@ It seems like UE4 is more stable when messages are throttled.
 rosrun topic_tools throttle messages /realsense/depth/color/points 2.0
 rosrun topic_tools throttle messages /my_odom 1.0
 ```
-
-
 
