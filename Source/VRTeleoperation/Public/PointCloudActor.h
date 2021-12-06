@@ -56,4 +56,9 @@ private:
 
 	bool bNeedsUpdate;
 
+public:
+
+	UPROPERTY(EditAnywhere)
+	AActor* robot;
+
 };

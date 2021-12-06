@@ -43,5 +43,7 @@ private:
 	class UTopic* OdometryTopic;
 
 	//static void OdometryCallback(TSharedPtr<class FROSBaseMsg> msg);
+
+	bool bNeedsUpdate;
 	
 };
