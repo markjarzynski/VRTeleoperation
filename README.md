@@ -42,7 +42,7 @@ echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
 ### Simulating Husky
 
 ```
-sudo apt install ros-melodic-husky-desktop ros-melodic-husky-simulator
+sudo apt install ros-melodic-husky-desktop ros-melodic-husky-simulator ros-melodic-husky-navigation
 ```
 
 ### Compiling rosbridge
