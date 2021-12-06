@@ -23,6 +23,10 @@ Skip this step if you're already running Ubuntu 20.04.
 2. Enable the Universe and Multiverse repos in Ubuntu: https://help.ubuntu.com/community/Repositories/Ubuntu
 3. Set up a Host-Only network: https://cs4118.github.io/dev-guides/host-only-network.html
 
+### WSL 2
+
+Instead of using VirtualBox, you can use WSL2. Make sure you're Windows 11, and have the WSL2 GPU drivers so you can do X11 forwarded.
+
 ### Installing ROS in Ubuntu
 
 Note: ROSIntegration doesn't communicate with ros noetic, you must use ros melodic.
@@ -38,9 +42,8 @@ echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
 ### Simulating Husky
 
 ```
-sudo apt install ros-melodic-husky-simulator
+sudo apt install ros-melodic-husky-desktop ros-melodic-husky-simulator
 ```
-
 
 ### Compiling rosbridge
 
