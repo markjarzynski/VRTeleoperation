@@ -69,6 +69,10 @@ void APointCloudActor::BeginPlay()
 				points.Empty();
 				points.Reserve(num_points);
 
+				FTransform offsetTransform = (robot != nullptr) ? robot->GetActorTransform() : FTransform();
+
+				UE_LOG(LogTemp, Log, TEXT("Robot Transform: %f %f %f"), offsetTransform.GetLocation().X, offsetTransform.GetLocation().Y, offsetTransform.GetLocation().Z);
+
 				for (uint32 i = 0; i < num_points; i += point_step) {
 
 					data_float32 x, y, z, rgb;
@@ -94,7 +98,11 @@ void APointCloudActor::BeginPlay()
 
 					if (!isnan(x.f) && !isnan(y.f) && !isnan(z.f)) {
 						if (true /*abs(x.f) < 10000 && abs(y.f) < 10000 && abs(z.f) < 10000*/) {
-							const FVector p = FVector(-x.f * scale, z.f * scale, -y.f * scale);
+							FVector p = FVector(-x.f * scale, z.f * scale, -y.f * scale);
+							FRotator r = offsetTransform.GetRotation().Rotator() - FRotator(0, 0, 3.14159265 / 4.);
+							p = r.RotateVector(p);
+							p += offsetTransform.GetLocation();
+
 							points.Emplace(p);
 							//UE_LOG(LogTemp, Log, TEXT("Point: %f %f %f %f"), x.f, y.f, z.f, rgb.f);
 

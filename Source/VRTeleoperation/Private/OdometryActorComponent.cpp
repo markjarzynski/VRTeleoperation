@@ -29,6 +29,8 @@ void UOdometryActorComponent::BeginPlay()
 	OdometryTopic = NewObject<UTopic>(UTopic::StaticClass());
 	ROSInst = Cast<UROSIntegrationGameInstance>(GetWorld()->GetGameInstance());
 
+	bNeedsUpdate = false;
+
 	if (ROSInst)
 	{
 		OdometryTopic->Init(ROSInst->ROSIntegrationCore, TEXT("/my_odom_throttle"), TEXT("nav_msgs/Odometry"));
@@ -39,6 +41,7 @@ void UOdometryActorComponent::BeginPlay()
 			if (Concrete.IsValid())
 			{
 				ROSMessages::geometry_msgs::Pose pose = Concrete->pose.pose;
+				ROSMessages::geometry_msgs::Twist twist = Concrete->twist.twist;
 
 				//UE_LOG(LogTemp, Log, TEXT("Odometry Callback %f %f %f"), pose.position.x, pose.position.y, pose.position.z);
 
@@ -48,6 +51,8 @@ void UOdometryActorComponent::BeginPlay()
 
 				//this->GetOwner()->SetActorLocationAndRotation(location, rotation);
 				//this->GetOwner()->SetActorLocationAndRotation(location, &orientation, false, ETeleportType::None);
+
+				bNeedsUpdate = true;
 			}
 			return;
 		};
@@ -74,7 +79,10 @@ void UOdometryActorComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-	this->GetOwner()->SetActorLocationAndRotation(location, rotation);
+	if (bNeedsUpdate) {
+		this->GetOwner()->SetActorLocationAndRotation(location, rotation);
+		bNeedsUpdate = false;
+	}
 }
 
 /*
